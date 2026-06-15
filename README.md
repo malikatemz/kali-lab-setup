@@ -439,7 +439,7 @@ BlackArch includes thousands of security packages and is more modular and resear
 ~/lab/
   targets/web/
   targets/network/
-  targets/active_directory/
+  targets/active-directory/
   exploits/
   reports/
   loot/
