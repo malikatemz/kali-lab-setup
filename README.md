@@ -28,32 +28,35 @@ sudo VBoxManage extpack install Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-ext
 - **RAM:** 8GB+ (16GB recommended)
 - **CPU:** 4+ cores
 - **Storage:** 100GB+ SSD
-- **Network:** Bridged adapter (for network靶机 access)
+- **Network:** Bridged adapter (for target network access)
 
 ### Create Pentesting VM
 ```bash
+# Create VM directory
+mkdir -p ~/VirtualBox\ VMs/KaliPentestLab
+
 # Create VM
-VBoxManage createvm --name "Kali Pentest Lab" --ostype "Linux_64" --register
+VBoxManage createvm --name "KaliPentestLab" --ostype "Linux_64" --register
 
 # Set memory and CPUs
-VBoxManage modifyvm "Kali Pentest Lab" --memory 8192 --cpus 4
+VBoxManage modifyvm "KaliPentestLab" --memory 8192 --cpus 4
 
 # Create virtual disk (100GB)
-VBoxManage createhd --filename ~/VirtualBox\ VMs/Kali Pentest Lab/kali.vdi --size 102400
+VBoxManage createhd --filename ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi --size 102400
 
 # Create SATA controller and attach disk
-VBoxManage storagectl "Kali Pentest Lab" --name "SATA" --add sata
-VBoxManage storageattach "Kali Pentest Lab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium ~/VirtualBox\ VMs/Kali\ Pentest\ Lab/kali.vdi
+VBoxManage storagectl "KaliPentestLab" --name "SATA" --add sata
+VBoxManage storageattach "KaliPentestLab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi
 
 # Attach ISO (download Kali Linux first)
-VBoxManage storagectl "Kali Pentest Lab" --name "IDE" --add ide
-VBoxManage storageattach "Kali Pentest Lab" --storagectl "IDE" --port 0 --device 0 --type dvddrive --medium /path/to/kali-linux.iso
+VBoxManage storagectl "KaliPentestLab" --name "IDE" --add ide
+VBoxManage storageattach "KaliPentestLab" --storagectl "IDE" --port 0 --device 0 --type dvddrive --medium /path/to/kali-linux.iso
 
-# Set network to bridged
-VBoxManage modifyvm "Kali Pentest Lab" --nic1 bridged --bridgeadapter1 en0
+# Set network to bridged (replace en0 with your network interface)
+VBoxManage modifyvm "KaliPentestLab" --nic1 bridged --bridgeadapter1 en0
 
 # Start VM
-VBoxManage startvm "Kali Pentest Lab"
+VBoxManage startvm "KaliPentestLab"
 ```
 
 ### Alternative: Install Kali Directly on Hardware
@@ -72,34 +75,79 @@ sudo dd if=kali-linux.iso of=/dev/sdX bs=4M status=progress
 
 ## Quick Install (Linux Mint)
 
+Run these commands in sequence for a complete installation:
+
+### Step 1: Core Pentesting Tools
 ```bash
-# Bulk install all tools on Linux Mint
 sudo apt update && sudo apt install -y \
-  nmap masscan nikto gobuster curl wget git build-essential \
-  metasploit-framework sqlmap hydra medusa wireshark tcpdump \
-  john hashcat python3 python3-pip \
-  burpsuite owasp-zap ffuf \
-  ghidra autopsy radare2 \
-  aircrack-ng kismet wifite \
-  bettercap mitmproxy \
+  nmap masscan nikto gobuster \
+  metasploit-framework sqlmap hydra medusa \
+  wireshark tcpdump \
+  john hashcat \
+  python3 python3-pip
+```
+
+### Step 2: Web Application Testing
+```bash
+sudo apt install -y \
+  burpsuite owasp-zap ffuf
+```
+
+### Step 3: Reverse Engineering & Forensics
+```bash
+sudo apt install -y \
+  ghidra autopsy radare2
+```
+
+### Step 4: Wireless Security Testing
+```bash
+sudo apt install -y \
+  aircrack-ng kismet wifite
+```
+
+### Step 5: Network Analysis & Proxy Tools
+```bash
+sudo apt install -y \
+  bettercap mitmproxy
+```
+
+### Step 6: Recon & Vulnerability Tools
+```bash
+sudo apt install -y \
   subfinder amass nuclei dirsearch \
   xsstrike trivy scoutsuite \
   pwndbg ropgadget angr
+```
 
-# Install additional tools via pip
+### Step 7: Build Essentials
+```bash
+sudo apt install -y curl wget git build-essential
+```
+
+### Step 8: Python Tools
+```bash
 pip3 install scapy pwntools impacket
+```
 
-# Install Wazuh (SIEM)
-curl -sO https://packages.wazuh.com/4.9/wazuh-install.sh && bash wazuh-install.sh -a
-
+### Step 9: SIEM & Monitoring Tools
+```bash
 # Install Zeek
 sudo apt install -y zeek
 
 # Install Suricata
 sudo apt install -y suricata
 
+# Install Wazuh (SIEM)
+curl -sO https://packages.wazuh.com/4.9/wazuh-install.sh
+sudo bash wazuh-install.sh -a
+
 # Install Security Onion (standalone)
 # See: https://docs.securityonion.net/en/2.4/installation.html
+```
+
+### All-in-One (Single Command)
+```bash
+sudo apt update && sudo apt install -y nmap masscan nikto gobuster metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat python3 python3-pip burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirsearch xsstrike trivy scoutsuite pwndbg ropgadget angr curl wget git build-essential && pip3 install scapy pwntools impacket && sudo apt install -y zeek suricata
 ```
 
 ---
