@@ -152,6 +152,34 @@ sudo apt update && sudo apt install -y nmap masscan nikto gobuster metasploit-fr
 
 ---
 
+## 🚀 Complete Lab Setup (VM + Tools + Everything)
+
+One command to set up your entire pentesting lab:
+
+```bash
+# Complete Lab Setup: VirtualBox + Kali VM + All Tools on Linux Mint
+# Step 1: Install VirtualBox
+sudo sh -c "echo 'deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian '$(lsb_release -sc)' contrib' > /etc/apt/sources.list.d/virtualbox.list" && wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add - && sudo apt update && sudo apt install -y virtualbox-7.0 && wget -q https://download.virtualbox.org/virtualbox/7.0.14/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack -O /tmp/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack && sudo VBoxManage extpack install /tmp/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack
+
+# Step 2: Create Kali VM
+mkdir -p ~/VirtualBox\ VMs/KaliPentestLab && VBoxManage createvm --name "KaliPentestLab" --ostype "Linux_64" --register && VBoxManage modifyvm "KaliPentestLab" --memory 8192 --cpus 4 && VBoxManage createhd --filename ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi --size 102400 && VBoxManage storagectl "KaliPentestLab" --name "SATA" --add sata && VBoxManage storageattach "KaliPentestLab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi && VBoxManage storagectl "KaliPentestLab" --name "IDE" --add ide && VBoxManage storageattach "KaliPentestLab" --storagectl "IDE" --port 0 --device 0 --type dvddrive --medium /path/to/kali-linux.iso && VBoxManage modifyvm "KaliPentestLab" --nic1 bridged --bridgeadapter1 en0
+
+# Step 3: Install all pentesting tools on Linux Mint
+sudo apt update && sudo apt install -y nmap masscan nikto gobuster metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat python3 python3-pip burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirsearch xsstrike trivy scoutsuite pwndbg ropgadget angr curl wget git build-essential && pip3 install scapy pwntools impacket && sudo apt install -y zeek suricata
+
+# Step 4: Start Kali VM
+echo "[+] Starting Kali VM..." && VBoxManage startvm "KaliPentestLab"
+```
+
+**Note:** Replace `/path/to/kali-linux.iso` with the actual path to your downloaded Kali Linux ISO file.
+
+**After setup:**
+1. Install Kali Linux in the VM (boot from ISO)
+2. Run assessment commands to verify tools
+3. Start hacking! 🕵️
+
+---
+
 ## 🧪 Tool Assessment Commands
 
 Quick reference commands to verify each tool is installed and working.
