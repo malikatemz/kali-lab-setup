@@ -180,6 +180,123 @@ echo "[+] Starting Kali VM..." && VBoxManage startvm "KaliPentestLab"
 
 ---
 
+## 💻 Daily Usage Commands
+
+Commands to start and manage your pentesting lab.
+
+### VirtualBox VM Management
+```bash
+# List all VMs
+VBoxManage list vms
+
+# Start Kali VM (headless - no GUI)
+VBoxManage startvm "KaliPentestLab"
+
+# Start Kali VM (with GUI)
+VBoxManage startvm "KaliPentestLab" --type gui
+
+# Stop Kali VM gracefully
+VBoxManage controlvm "KaliPentestLab" acpipowerbutton
+
+# Force stop Kali VM
+VBoxManage controlvm "KaliPentestLab" poweroff
+
+# Take snapshot of current state
+VBoxManage snapshot "KaliPentestLab" take "clean-install"
+
+# Restore to snapshot
+VBoxManage snapshot "KaliPentestLab" restore "clean-install"
+
+# View VM info
+VBoxManage showvminfo "KaliPentestLab"
+```
+
+### Opening Pentesting Tools
+
+#### From Terminal (GUI Tools)
+```bash
+# Burp Suite
+burpsuite &
+
+# OWASP ZAP
+zap.sh &
+
+# Wireshark
+wireshark &
+
+# Ghidra
+ghidra &
+
+# Autopsy
+autopsy &
+
+# Metasploit Framework
+msfconsole
+
+# BeEF (Browser Exploitation Framework)
+beef-xss
+
+# Maltego
+maltego
+```
+
+#### From Terminal (CLI Tools)
+```bash
+# Nmap - Quick scan
+nmap -sn 192.168.1.0/24
+
+# Nmap - Full port scan
+nmap -sV -sC -A -T4 target.com
+
+# SQLMap - Test URL for SQL injection
+sqlmap -u "http://target.com/page?id=1" --batch
+
+# ffuf - Web directory fuzzing
+ffuf -w /usr/share/wordlists/dirb/common.txt -u http://target.com/FUZZ
+
+# Hydra - SSH brute force
+hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.100
+
+# John - Password cracking
+john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt
+
+# Hashcat - GPU password cracking
+hashcat -m 0 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt
+
+# gobuster - Directory brute force
+gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt
+
+# nikto - Web server scan
+nikto -h http://target.com
+
+# searchsploit - Search ExploitDB
+searchsploit apache 2.4
+
+# msfconsole - Start Metasploit
+msfconsole
+
+# Bettercap - Network spoofing
+sudo bettercap - iface wlan0
+
+# mitmproxy - Intercept traffic
+mitmproxy --listen-port 8080
+
+# aircrack-ng - WiFi auditing
+sudo airmon-ng start wlan0
+sudo airodump-ng wlan0mon
+```
+
+#### From GUI Menu
+After installation, most tools appear in your application menu:
+- **Kali Linux** → Pentesting category
+- **Burp Suite** → Web Application Testing
+- **OWASP ZAP** → Web Application Testing
+- **Wireshark** → Network Analysis
+- **Ghidra** → Reverse Engineering
+- **Autopsy** → Forensics
+
+---
+
 ## 🧪 Tool Assessment Commands
 
 Quick reference commands to verify each tool is installed and working.
