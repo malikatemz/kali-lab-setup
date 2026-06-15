@@ -167,20 +167,40 @@ sudo apt install -y \
 
 ### Step 6: Recon & Vulnerability Tools
 ```bash
-sudo apt install -y \
-  subfinder amass nuclei dirsearch \
-  xsstrike trivy scoutsuite \
-  pwndbg ropgadget angr
+# Install from apt
+sudo apt install -y exploitdb masscan
+
+# Install from snap (if snapd installed)
+sudo snap install nuclei
+
+# Install from pip
+pip3 install dirsearch xsstrike pwndbg ropgadget scapy-full
+
+# Install tools that need manual setup
+# Subfinder (binary)
+wget -q https://github.com/projectdiscovery/subfinder/releases/download/v2.6.1/subfinder-linux-amd64.zip -O /tmp/subfinder.zip && unzip -o /tmp/subfinder.zip -d ~/.local/bin && chmod +x ~/.local/bin/subfinder
+
+# Amass (binary)
+wget -q https://github.com/owasp-amass/amass/releases/download/v3.23.0/amass_linux_amd64.zip -O /tmp/amass.zip && unzip -o /tmp/amass.zip -d ~/.local/bin && chmod +x ~/.local/bin/amass
+
+# Trivy (binary)
+wget -q https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.deb -O /tmp/trivy.deb && sudo dpkg -i /tmp/trivy.deb
+
+# Scout Suite (pip)
+pip3 install scoutsuite
 ```
 
 ### Step 7: Build Essentials
 ```bash
-sudo apt install -y curl wget git build-essential
+sudo apt install -y curl wget git build-essential python3 python3-pip
 ```
 
-### Step 8: Python Tools
+### Step 8: Optional Tools (Not in Ubuntu Repos)
 ```bash
-pip3 install scapy pwntools impacket
+# Install BeEF (Browser Exploitation Framework)
+sudo apt install -y beef-xss
+
+# Note: Maltego is a proprietary tool - download from https://www.maltego.com/
 ```
 
 ### Step 9: SIEM & Monitoring Tools
@@ -201,7 +221,27 @@ sudo bash wazuh-install.sh -a
 
 ### All-in-One (Single Command)
 ```bash
-sudo apt update && sudo apt install -y nmap masscan nikto gobuster metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat python3 python3-pip burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirsearch xsstrike trivy scoutsuite pwndbg ropgadget angr curl wget git build-essential && pip3 install scapy pwntools impacket && sudo apt install -y zeek suricata
+# Core tools (apt)
+sudo apt update && sudo apt install -y \
+  nmap masscan nikto gobuster exploitdb \
+  metasploit-framework sqlmap hydra medusa \
+  wireshark tcpdump john hashcat \
+  python3 python3-pip \
+  burpsuite owasp-zap ffuf \
+  ghidra autopsy radare2 \
+  aircrack-ng kismet wifite \
+  bettercap mitmproxy \
+  beef-xss \
+  curl wget git build-essential \
+  zeek suricata
+
+# Python tools (pip)
+pip3 install scapy pwntools impacket dirsearch xsstrike pwndbg ropgadget scoutsuite
+
+# Install binaries manually
+wget -q https://github.com/projectdiscovery/subfinder/releases/download/v2.6.1/subfinder-linux-amd64.zip -O /tmp/subfinder.zip && unzip -o /tmp/subfinder.zip -d ~/.local/bin && chmod +x ~/.local/bin/subfinder
+wget -q https://github.com/owasp-amass/amass/releases/download/v3.23.0/amass_linux_amd64.zip -O /tmp/amass.zip && unzip -o /tmp/amass.zip -d ~/.local/bin && chmod +x ~/.local/bin/amass
+wget -q https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.deb -O /tmp/trivy.deb && sudo dpkg -i /tmp/trivy.deb
 ```
 
 ---
@@ -211,7 +251,6 @@ sudo apt update && sudo apt install -y nmap masscan nikto gobuster metasploit-fr
 One command to set up your entire pentesting lab:
 
 ```bash
-# Complete Lab Setup: VirtualBox + Kali VM + All Tools on Linux Mint
 # Step 1: Install VirtualBox
 sudo sh -c "echo 'deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian '$(lsb_release -sc)' contrib' > /etc/apt/sources.list.d/virtualbox.list" && wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add - && sudo apt update && sudo apt install -y virtualbox-7.0 && wget -q https://download.virtualbox.org/virtualbox/7.0.14/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack -O /tmp/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack && sudo VBoxManage extpack install /tmp/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack
 
@@ -219,7 +258,7 @@ sudo sh -c "echo 'deb [arch=amd64] https://download.virtualbox.org/virtualbox/de
 mkdir -p ~/VirtualBox\ VMs/KaliPentestLab && VBoxManage createvm --name "KaliPentestLab" --ostype "Linux_64" --register && VBoxManage modifyvm "KaliPentestLab" --memory 8192 --cpus 4 && VBoxManage createhd --filename ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi --size 102400 && VBoxManage storagectl "KaliPentestLab" --name "SATA" --add sata && VBoxManage storageattach "KaliPentestLab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi && VBoxManage storagectl "KaliPentestLab" --name "IDE" --add ide && VBoxManage storageattach "KaliPentestLab" --storagectl "IDE" --port 0 --device 0 --type dvddrive --medium /path/to/kali-linux.iso && VBoxManage modifyvm "KaliPentestLab" --nic1 bridged --bridgeadapter1 en0
 
 # Step 3: Install all pentesting tools on Linux Mint
-sudo apt update && sudo apt install -y nmap masscan nikto gobuster metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat python3 python3-pip burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirsearch xsstrike trivy scoutsuite pwndbg ropgadget angr curl wget git build-essential && pip3 install scapy pwntools impacket && sudo apt install -y zeek suricata
+sudo apt update && sudo apt install -y nmap masscan nikto gobuster exploitdb metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat python3 python3-pip burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy beef-xss curl wget git build-essential zeek suricata && pip3 install scapy pwntools impacket dirsearch xsstrike pwndbg ropgadget scoutsuite && wget -q https://github.com/projectdiscovery/subfinder/releases/download/v2.6.1/subfinder-linux-amd64.zip -O /tmp/subfinder.zip && unzip -o /tmp/subfinder.zip -d ~/.local/bin && chmod +x ~/.local/bin/subfinder && wget -q https://github.com/owasp-amass/amass/releases/download/v3.23.0/amass_linux_amd64.zip -O /tmp/amass.zip && unzip -o /tmp/amass.zip -d ~/.local/bin && chmod +x ~/.local/bin/amass && wget -q https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.deb -O /tmp/trivy.deb && sudo dpkg -i /tmp/trivy.deb
 
 # Step 4: Start Kali VM
 echo "[+] Starting Kali VM..." && VBoxManage startvm "KaliPentestLab"
@@ -330,7 +369,7 @@ searchsploit apache 2.4
 msfconsole
 
 # Bettercap - Network spoofing
-sudo bettercap - iface wlan0
+sudo bettercap -iface wlan0
 
 # mitmproxy - Intercept traffic
 mitmproxy --listen-port 8080
@@ -361,13 +400,14 @@ Quick reference commands to verify each tool is installed and working.
 nmap -V
 nmap -sn 192.168.1.0/24
 
-# theHarvester - Email/domain harvesting
+# theHarvester - Email/domain harvesting (install first if not in apt)
+# sudo apt install -y theharvester
 theHarvester -d example.com -b google
 
-# Maltego - Run from menu
-maltego
+# searchsploit - Search ExploitDB (comes with exploitdb package)
+searchsploit apache 2.4
 
-# Recon-ng
+# Recon-ng (install first: pip3 install recon-ng)
 recon-ng
 ```
 
@@ -464,7 +504,7 @@ masscan --help
 nuclei -version
 
 # Nikto
-nikto -Help
+nikto -h
 
 # dirsearch
 python3 dirsearch.py -u http://target.com
