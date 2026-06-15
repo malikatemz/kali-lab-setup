@@ -1,33 +1,32 @@
 #!/bin/bash
-# Linux Mint Pentesting Lab Setup Script
-# Sets up a fully configured pentest lab environment on Linux Mint
+# Kali Linux Pentesting Lab Setup Script
+# Sets up a fully configured pentest lab environment on Kali Linux
 
 echo "[*] Updating system..."
-sudo apt-get update -qq && sudo apt-get upgrade -y -qq
+sudo apt-get update -qq && sudo apt-get full-upgrade -y -qq
 
-echo "[*] Installing core tools..."
+echo "[*] Installing core pentesting tools..."
 sudo apt-get install -y -qq \
-  nmap masscan nikto gobuster \
+  nmap masscan nikto gobuster exploitdb \
+  metasploit-framework sqlmap hydra medusa \
   wireshark tcpdump netcat-openbsd \
-  sqlmap hydra medusa john hashcat \
-  metasploit-framework \
+  john hashcat \
   burpsuite owasp-zap ffuf \
+  ghidra autopsy radare2 \
+  aircrack-ng kismet wifite \
+  bettercap mitmproxy \
+  subfinder amass nuclei dirbuster dirb \
+  beef-xss
+
+echo "[*] Installing build tools..."
+sudo apt-get install -y -qq \
   git curl wget python3 python3-pip
 
-echo "[*] Installing forensics and reverse engineering tools..."
-sudo apt-get install -y -qq \
-  ghidra autopsy radare2
+echo "[*] Installing Python pentest tools..."
+pip3 install scapy pwntools impacket xsstrike dirsearch pwndbg ropgadget --quiet
 
-echo "[*] Installing wireless tools..."
-sudo apt-get install -y -qq \
-  aircrack-ng kismet wifite
-
-echo "[*] Installing network analysis tools..."
-sudo apt-get install -y -qq \
-  bettercap mitmproxy
-
-echo "[*] Installing Python tools..."
-pip3 install impacket scapy requests pwntools --quiet
+echo "[*] Installing SIEM tools..."
+sudo apt-get install -y -qq zeek suricata
 
 echo "[*] Setting up wordlists..."
 sudo mkdir -p /usr/share/wordlists

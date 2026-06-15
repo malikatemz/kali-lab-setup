@@ -1,6 +1,6 @@
-# 🔐 Linux Mint — Pentesting Lab Setup
+# 🔐 Kali Linux — Pentesting Lab Setup
 
-Automated setup script and reference guides for a professional pentest lab on Linux Mint.
+Automated setup script and reference guides for a professional pentest lab on Kali Linux VM.
 
 ---
 
@@ -127,128 +127,71 @@ sudo dd if=kali-linux.iso of=/dev/sdX bs=4M status=progress
 
 ---
 
-## Quick Install (Linux Mint)
+## Quick Install (Kali Linux VM)
 
-Run these commands in sequence for a complete installation:
+Run these commands in sequence for a complete installation on Kali Linux:
 
-### Step 1: Core Pentesting Tools
+### Step 1: Update & Core Tools
 ```bash
-sudo apt update && sudo apt install -y \
-  nmap masscan nikto gobuster \
-  metasploit-framework sqlmap hydra medusa \
-  wireshark tcpdump \
-  john hashcat \
-  python3 python3-pip
+sudo apt update && sudo apt full-upgrade -y
+sudo apt install -y nmap masscan nikto gobuster exploitdb
+sudo apt install -y metasploit-framework sqlmap hydra medusa
+sudo apt install -y wireshark tcpdump john hashcat
 ```
 
 ### Step 2: Web Application Testing
 ```bash
-sudo apt install -y \
-  burpsuite owasp-zap ffuf
+sudo apt install -y burpsuite owasp-zap ffuf
 ```
 
 ### Step 3: Reverse Engineering & Forensics
 ```bash
-sudo apt install -y \
-  ghidra autopsy radare2
+sudo apt install -y ghidra autopsy radare2
 ```
 
 ### Step 4: Wireless Security Testing
 ```bash
-sudo apt install -y \
-  aircrack-ng kismet wifite
+sudo apt install -y aircrack-ng kismet wifite
 ```
 
 ### Step 5: Network Analysis & Proxy Tools
 ```bash
-sudo apt install -y \
-  bettercap mitmproxy
+sudo apt install -y bettercap mitmproxy
 ```
 
 ### Step 6: Recon & Vulnerability Tools
 ```bash
-# Install from apt
-sudo apt install -y exploitdb masscan
-
-# Install from snap (if snapd installed)
-sudo snap install nuclei
-
-# Install from pip
-pip3 install dirsearch xsstrike pwndbg ropgadget scapy-full
-
-# Install tools that need manual setup
-# Subfinder (binary)
-wget -q https://github.com/projectdiscovery/subfinder/releases/download/v2.6.1/subfinder-linux-amd64.zip -O /tmp/subfinder.zip && unzip -o /tmp/subfinder.zip -d ~/.local/bin && chmod +x ~/.local/bin/subfinder
-
-# Amass (binary)
-wget -q https://github.com/owasp-amass/amass/releases/download/v3.23.0/amass_linux_amd64.zip -O /tmp/amass.zip && unzip -o /tmp/amass.zip -d ~/.local/bin && chmod +x ~/.local/bin/amass
-
-# Trivy (binary)
-wget -q https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.deb -O /tmp/trivy.deb && sudo dpkg -i /tmp/trivy.deb
-
-# Scout Suite (pip)
-pip3 install scoutsuite
+sudo apt install -y subfinder amass nuclei dirbuster dirb
+pip3 install xsstrike dirsearch pwndbg ropgadget
 ```
 
-### Step 7: Build Essentials
+### Step 7: Exploitation Framework
 ```bash
-sudo apt install -y curl wget git build-essential python3 python3-pip
-```
-
-### Step 8: Optional Tools (Not in Ubuntu Repos)
-```bash
-# Install BeEF (Browser Exploitation Framework)
 sudo apt install -y beef-xss
+```
 
-# Note: Maltego is a proprietary tool - download from https://www.maltego.com/
+### Step 8: Python Tools
+```bash
+pip3 install scapy pwntools impacket
 ```
 
 ### Step 9: SIEM & Monitoring Tools
 ```bash
-# Install Zeek
-sudo apt install -y zeek
-
-# Install Suricata
-sudo apt install -y suricata
-
-# Install Wazuh (SIEM)
+sudo apt install -y zeek suricata
 curl -sO https://packages.wazuh.com/4.9/wazuh-install.sh
 sudo bash wazuh-install.sh -a
-
-# Install Security Onion (standalone)
-# See: https://docs.securityonion.net/en/2.4/installation.html
 ```
 
 ### All-in-One (Single Command)
 ```bash
-# Core tools (apt)
-sudo apt update && sudo apt install -y \
-  nmap masscan nikto gobuster exploitdb \
-  metasploit-framework sqlmap hydra medusa \
-  wireshark tcpdump john hashcat \
-  python3 python3-pip \
-  burpsuite owasp-zap ffuf \
-  ghidra autopsy radare2 \
-  aircrack-ng kismet wifite \
-  bettercap mitmproxy \
-  beef-xss \
-  curl wget git build-essential \
-  zeek suricata
-
-# Python tools (pip)
-pip3 install scapy pwntools impacket dirsearch xsstrike pwndbg ropgadget scoutsuite
-
-# Install binaries manually
-wget -q https://github.com/projectdiscovery/subfinder/releases/download/v2.6.1/subfinder-linux-amd64.zip -O /tmp/subfinder.zip && unzip -o /tmp/subfinder.zip -d ~/.local/bin && chmod +x ~/.local/bin/subfinder
-wget -q https://github.com/owasp-amass/amass/releases/download/v3.23.0/amass_linux_amd64.zip -O /tmp/amass.zip && unzip -o /tmp/amass.zip -d ~/.local/bin && chmod +x ~/.local/bin/amass
-wget -q https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.deb -O /tmp/trivy.deb && sudo dpkg -i /tmp/trivy.deb
+sudo apt update && sudo apt full-upgrade -y && sudo apt install -y nmap masscan nikto gobuster exploitdb metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirbuster dirb beef-xss curl wget git python3 python3-pip zeek suricata && pip3 install scapy pwntools impacket xsstrike dirsearch pwndbg ropgadget
 ```
 
 ---
 
 ## 🚀 Complete Lab Setup (VM + Tools + Everything)
 
-One command to set up your entire pentesting lab:
+One command to set up your entire pentesting lab on Kali Linux:
 
 ```bash
 # Step 1: Install VirtualBox
@@ -257,8 +200,8 @@ sudo sh -c "echo 'deb [arch=amd64] https://download.virtualbox.org/virtualbox/de
 # Step 2: Create Kali VM
 mkdir -p ~/VirtualBox\ VMs/KaliPentestLab && VBoxManage createvm --name "KaliPentestLab" --ostype "Linux_64" --register && VBoxManage modifyvm "KaliPentestLab" --memory 8192 --cpus 4 && VBoxManage createhd --filename ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi --size 102400 && VBoxManage storagectl "KaliPentestLab" --name "SATA" --add sata && VBoxManage storageattach "KaliPentestLab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi && VBoxManage storagectl "KaliPentestLab" --name "IDE" --add ide && VBoxManage storageattach "KaliPentestLab" --storagectl "IDE" --port 0 --device 0 --type dvddrive --medium /path/to/kali-linux.iso && VBoxManage modifyvm "KaliPentestLab" --nic1 bridged --bridgeadapter1 en0
 
-# Step 3: Install all pentesting tools on Linux Mint
-sudo apt update && sudo apt install -y nmap masscan nikto gobuster exploitdb metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat python3 python3-pip burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy beef-xss curl wget git build-essential zeek suricata && pip3 install scapy pwntools impacket dirsearch xsstrike pwndbg ropgadget scoutsuite && wget -q https://github.com/projectdiscovery/subfinder/releases/download/v2.6.1/subfinder-linux-amd64.zip -O /tmp/subfinder.zip && unzip -o /tmp/subfinder.zip -d ~/.local/bin && chmod +x ~/.local/bin/subfinder && wget -q https://github.com/owasp-amass/amass/releases/download/v3.23.0/amass_linux_amd64.zip -O /tmp/amass.zip && unzip -o /tmp/amass.zip -d ~/.local/bin && chmod +x ~/.local/bin/amass && wget -q https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.deb -O /tmp/trivy.deb && sudo dpkg -i /tmp/trivy.deb
+# Step 3: Install all pentesting tools on Kali Linux
+sudo apt update && sudo apt full-upgrade -y && sudo apt install -y nmap masscan nikto gobuster exploitdb metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirbuster dirb beef-xss curl wget git python3 python3-pip zeek suricata && pip3 install scapy pwntools impacket xsstrike dirsearch pwndbg ropgadget
 
 # Step 4: Start Kali VM
 echo "[+] Starting Kali VM..." && VBoxManage startvm "KaliPentestLab"
