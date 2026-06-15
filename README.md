@@ -1,6 +1,6 @@
-# 🔐 Kali Linux — Pentesting Lab Setup
+# 🔐 Kali Linux VM — Pentesting Lab Setup
 
-Automated setup script and reference guides for a professional pentest lab on Kali Linux VM.
+Automated setup guide for running Kali Linux VM on Linux Mint host, with all pentesting tools pre-installed.
 
 ---
 
@@ -58,11 +58,11 @@ ls /dev/kvm
 
 ---
 
-## 🖥️ VM Setup (Optional)
+## 🖥️ VM Setup (Linux Mint Host)
 
-Create a virtual pentesting lab within Linux Mint using VirtualBox.
+Create a Kali Linux VM on your Linux Mint system using VirtualBox.
 
-### Install VirtualBox
+### Install VirtualBox on Linux Mint
 ```bash
 # Add Oracle repository
 sudo sh -c "echo 'deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian '$(lsb_release -sc)' contrib' > /etc/apt/sources.list.d/virtualbox.list"
@@ -127,9 +127,9 @@ sudo dd if=kali-linux.iso of=/dev/sdX bs=4M status=progress
 
 ---
 
-## Quick Install (Kali Linux VM)
+## 📦 Install Tools (Kali Linux VM)
 
-Run these commands in sequence for a complete installation on Kali Linux:
+Run these commands inside your Kali Linux VM after installation.
 
 ### Step 1: Update & Core Tools
 ```bash
@@ -189,22 +189,26 @@ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y nmap masscan 
 
 ---
 
-## 🚀 Complete Lab Setup (VM + Tools + Everything)
+## 🚀 Complete Lab Setup
 
-One command to set up your entire pentesting lab on Kali Linux:
-
+### On Linux Mint Host: Install VirtualBox
 ```bash
-# Step 1: Install VirtualBox
 sudo sh -c "echo 'deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian '$(lsb_release -sc)' contrib' > /etc/apt/sources.list.d/virtualbox.list" && wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add - && sudo apt update && sudo apt install -y virtualbox-7.0 && wget -q https://download.virtualbox.org/virtualbox/7.0.14/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack -O /tmp/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack && sudo VBoxManage extpack install /tmp/Oracle_VirtualBox_Extension_Pack-7.0.14.vbox-extpack
+```
 
-# Step 2: Create Kali VM
+### On Linux Mint Host: Create Kali VM
+```bash
 mkdir -p ~/VirtualBox\ VMs/KaliPentestLab && VBoxManage createvm --name "KaliPentestLab" --ostype "Linux_64" --register && VBoxManage modifyvm "KaliPentestLab" --memory 8192 --cpus 4 && VBoxManage createhd --filename ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi --size 102400 && VBoxManage storagectl "KaliPentestLab" --name "SATA" --add sata && VBoxManage storageattach "KaliPentestLab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium ~/VirtualBox\ VMs/KaliPentestLab/kali.vdi && VBoxManage storagectl "KaliPentestLab" --name "IDE" --add ide && VBoxManage storageattach "KaliPentestLab" --storagectl "IDE" --port 0 --device 0 --type dvddrive --medium /path/to/kali-linux.iso && VBoxManage modifyvm "KaliPentestLab" --nic1 bridged --bridgeadapter1 en0
+```
 
-# Step 3: Install all pentesting tools on Kali Linux
+### Inside Kali VM: Install All Tools
+```bash
 sudo apt update && sudo apt full-upgrade -y && sudo apt install -y nmap masscan nikto gobuster exploitdb metasploit-framework sqlmap hydra medusa wireshark tcpdump john hashcat burpsuite owasp-zap ffuf ghidra autopsy radare2 aircrack-ng kismet wifite bettercap mitmproxy subfinder amass nuclei dirbuster dirb beef-xss curl wget git python3 python3-pip zeek suricata && pip3 install scapy pwntools impacket xsstrike dirsearch pwndbg ropgadget
+```
 
-# Step 4: Start Kali VM
-echo "[+] Starting Kali VM..." && VBoxManage startvm "KaliPentestLab"
+### Start the Kali VM
+```bash
+VBoxManage startvm "KaliPentestLab"
 ```
 
 **Note:** Replace `/path/to/kali-linux.iso` with the actual path to your downloaded Kali Linux ISO file.

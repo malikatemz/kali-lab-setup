@@ -1,6 +1,7 @@
 #!/bin/bash
-# Kali Linux Pentesting Lab Setup Script
-# Sets up a fully configured pentest lab environment on Kali Linux
+# Kali Linux VM - Pentesting Tools Setup Script
+# Run this INSIDE your Kali Linux VM to install all pentesting tools
+# (Not for Linux Mint host)
 
 echo "[*] Updating system..."
 sudo apt-get update -qq && sudo apt-get full-upgrade -y -qq
