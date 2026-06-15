@@ -4,6 +4,60 @@ Automated setup script and reference guides for a professional pentest lab on Li
 
 ---
 
+## 📋 Host System Requirements
+
+Minimum and recommended specifications for your laptop/PC to run the pentesting lab.
+
+### Minimum Requirements
+| Component | Specification |
+|-----------|---------------|
+| **RAM** | 8 GB |
+| **CPU** | 4 cores (Intel i5 / AMD Ryzen 5 or equivalent) |
+| **Storage** | 150 GB free space |
+| **OS** | Linux Mint 20+ (Ubuntu 20.04 LTS based) |
+| **Network** | Ethernet or WiFi adapter |
+| **Virtualization** | VT-x/AMD-V enabled in BIOS |
+
+### Recommended Requirements
+| Component | Specification |
+|-----------|---------------|
+| **RAM** | 16 GB (for running VM + host simultaneously) |
+| **CPU** | 6+ cores (Intel i7 / AMD Ryzen 7 or equivalent) |
+| **Storage** | 256 GB+ SSD |
+| **GPU** | Dedicated GPU (for Hashcat/John GPU acceleration) |
+| **OS** | Linux Mint 21+ (Ubuntu 22.04 LTS based) |
+| **Network** | Gigabit Ethernet + WiFi adapter |
+| **Virtualization** | VT-x/AMD-V enabled in BIOS |
+
+### Enabling Virtualization
+```bash
+# Check if virtualization is enabled
+grep -E '(vmx|svm)' /proc/cpuinfo
+
+# If no output, enable in BIOS:
+# - Restart computer
+# - Press F2/Del to enter BIOS
+# - Find "Intel VT-x" or "AMD-V" under CPU Configuration
+# - Enable and save
+```
+
+### Checking Available Resources
+```bash
+# Check RAM
+free -h
+
+# Check CPU cores
+nproc
+
+# Check disk space
+df -h
+
+# Check if virtualization is available
+ls /dev/kvm
+```
+
+---
+
 ## 🖥️ VM Setup (Optional)
 
 Create a virtual pentesting lab within Linux Mint using VirtualBox.
